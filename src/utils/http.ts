@@ -70,9 +70,39 @@ export const http = <T>(options: UniApp.RequestOptions) => {
       ...options,
       // 2、请求成功
       success(res) {
-        // 2.1 提取核心数据 res.data
-        resolve(res.data as Data<T>)
+        // 状态码2XX axios就是这样设计的---> 2xx的状态码都走resolve
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          // 2.1 提取核心数据 res.data
+          resolve(res.data as Data<T>)
+        } else if (res.statusCode === 401) {
+          // 401错误---> 清理用户信息，跳转到登陆页
+          const memberStore = useMemberStore()
+          memberStore.clearProfile()
+          // 小程序跳转页面的方法
+          uni.navigateTo({ url: '/pages/login/login' })
+          // 标记失败  将res进行回传 在catch中就可以获取到请求失败的响应信息
+          // 这样后续通过catch可以捕获到这个被 reject 的 Promise。
+          console.log('401401401');
+
+          reject(res)
+        } else {
+          // 其他错误  -> 根据后端错误信息轻提示
+          uni.showToast({
+            icon: 'none',
+            title: (res.data as Data<T>).msg || '请求错误'
+          })
+          // 标记为失败
+          reject(res)
+        }
       },
+      // 响应失败
+      fail(err) {
+        uni.showToast({
+          icon: 'none',
+          title: '网络错误，换个网络试试',
+        })
+        reject(err)
+      }
 
     })
   })

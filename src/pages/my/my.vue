@@ -7,11 +7,11 @@ const memberStore = useMemberStore()
 const getData = async () => {
   const res = await http<number[]>({
     method: 'GET',
-    url: '/home/banner',
+    url: '',
     header: {},
   })
-  console.log('请求成功', res.result);
-
+  console.log('请求数据成功', res.result);
+  console.log(res);
 }
 </script>
 
