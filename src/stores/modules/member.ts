@@ -8,7 +8,7 @@ export const useMemberStore = defineStore(
     // 会员信息
     const profile = ref<any>()
 
-    // 保存会员信息，登录时使用
+    // 保存会员信息，登录时使用  token
     const setProfile = (val: any) => {
       profile.value = val
     }
