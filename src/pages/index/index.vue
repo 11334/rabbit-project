@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getHomeBannerAPI } from '@/services/home';
 import CustomNavbar from './componnets/CustomNavbar.vue';
+import CategoryPanel from './componnets/CategoryPanel.vue';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 import type { BannerItem } from '@/types/home';
@@ -23,9 +24,13 @@ onLoad(() => {
   <CustomNavbar />
   <!-- 自定义轮播图 -->
   <XtxSwiper :list="bannerList" />
+  <!-- 分类面板 -->
+  <CategoryPanel />
   <view class="index">index</view>
 </template>
 
 <style lang="scss">
-//
+page {
+  background-color: #F7F7F7;
+}
 </style>
