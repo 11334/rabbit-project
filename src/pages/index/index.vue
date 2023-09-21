@@ -6,6 +6,7 @@ import HotPanel from './componnets/HotPanel.vue';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home';
+import type { XtxGuessInstance } from '@/types/component';
 // 空数组在 ts 里面没有指定类型  以后只能是空数组 不能存放任何数据
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -37,13 +38,20 @@ onLoad(() => {
   getHomeCategoryData()
   getHomeHotData()
 })
+// 获取猜你喜欢组件实例
+const guessRef = ref<XtxGuessInstance>()
+// 滚动触底自动触发
+const onScrolltolower = () => {
+  console.log('滚动触底');
+  guessRef.value?.getMore()
+}
 </script>
 
 <template>
   <!-- 自定义导航栏 -->
   <CustomNavbar />
 
-  <scroll-view class="scroll-view" scroll-y>
+  <scroll-view @scrolltolower="onScrolltolower" class="scroll-view" scroll-y>
     <!-- 自定义轮播图 -->
     <XtxSwiper :list="bannerList" />
     <!-- 分类面板 -->

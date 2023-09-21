@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import { getHomeGoodsGuessLikeAPI } from '@/services/home';
-import { ref } from 'vue';
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import type { GuessItem } from '@/types/home'
 // 获取猜你喜欢数据
 const guessList = ref<GuessItem[]>([])
+// 获取猜你喜欢数据
 const getHomeGoodsGuessLikeData = async () => {
   const res = await getHomeGoodsGuessLikeAPI()
   guessList.value = res.result.items
-  console.log(guessList.value);
+  // console.log(guessList.value);
 }
 
 // 组件挂载完毕
 onMounted(() => {
-  getHomeGoodsGuessLikeData();
+  getHomeGoodsGuessLikeData()
+})
+
+// 暴露方法
+// 改名字
+defineExpose({
+  getMore: getHomeGoodsGuessLikeData
 })
 </script>
 
