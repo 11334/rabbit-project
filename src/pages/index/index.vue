@@ -42,7 +42,7 @@ onLoad(() => {
 const guessRef = ref<XtxGuessInstance>()
 // 滚动触底自动触发
 const onScrolltolower = () => {
-  console.log('滚动触底');
+  // console.log('滚动触底');
   guessRef.value?.getMore()
 }
 </script>
@@ -59,7 +59,7 @@ const onScrolltolower = () => {
     <!-- 热门推荐 -->
     <HotPanel :list="homeHotList" />
     <!-- 猜你喜欢 -->
-    <XtxGuess />
+    <XtxGuess ref="guessRef" />
   </scroll-view>
 </template>
 

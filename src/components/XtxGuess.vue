@@ -2,20 +2,35 @@
 import { getHomeGoodsGuessLikeAPI } from '@/services/home';
 import { ref, onMounted } from 'vue';
 import type { GuessItem } from '@/types/home'
+import type { PageParams } from '@/types/global';
+
+// 分页参数
+// Required将可选变为必选
+const pageParams: Required<PageParams> = {
+  page: 1,
+  pageSize: 10,
+}
 // 获取猜你喜欢数据
 const guessList = ref<GuessItem[]>([])
 // 获取猜你喜欢数据
 const getHomeGoodsGuessLikeData = async () => {
-  const res = await getHomeGoodsGuessLikeAPI()
-  guessList.value = res.result.items
+  const res = await getHomeGoodsGuessLikeAPI(pageParams)
+  // guessList.value = res.result.items
   // console.log(guessList.value);
+  // 数组的追加
+  guessList.value.push(...res.result.items)
+  // 页码累加
+  pageParams.page++
 }
 
 // 组件挂载完毕
 onMounted(() => {
   getHomeGoodsGuessLikeData()
 })
+const sayHello = () => {
+  console.log('hello');
 
+}
 // 暴露方法
 // 改名字
 defineExpose({
