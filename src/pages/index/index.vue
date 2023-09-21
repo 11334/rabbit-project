@@ -4,7 +4,7 @@ import CustomNavbar from './componnets/CustomNavbar.vue';
 import CategoryPanel from './componnets/CategoryPanel.vue';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
-import type { BannerItem } from '@/types/home';
+import type { BannerItem, CategoryItem } from '@/types/home';
 // 空数组在 ts 里面没有指定类型  以后只能是空数组 不能存放任何数据
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -15,10 +15,10 @@ const getHomeBannerData = async () => {
 }
 
 // 获取前台分类数据
+const categoryList = ref<CategoryItem[]>([])
 const getHomeCategoryData = async () => {
   const res = await getHomeCategoryAPI()
-  console.log(res);
-
+  categoryList.value = res.result
 }
 
 // 页面加载的时候调用一次
@@ -34,7 +34,7 @@ onLoad(() => {
   <!-- 自定义轮播图 -->
   <XtxSwiper :list="bannerList" />
   <!-- 分类面板 -->
-  <CategoryPanel />
+  <CategoryPanel :list="categoryList" />
   <view class="index">index</view>
 </template>
 
