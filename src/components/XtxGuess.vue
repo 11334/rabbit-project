@@ -7,7 +7,7 @@ import type { PageParams } from '@/types/global';
 // 分页参数
 // Required将可选变为必选
 const pageParams: Required<PageParams> = {
-  page: 30,
+  page: 1,
   pageSize: 10,
 }
 // 获取猜你喜欢数据
@@ -33,7 +33,12 @@ const getHomeGoodsGuessLikeData = async () => {
     finish.value = true
   }
 }
-
+// 重置数据
+const resetData = () => {
+  pageParams.page = 1
+  guessList.value = []
+  finish.value = false
+}
 // 组件挂载完毕
 onMounted(() => {
   getHomeGoodsGuessLikeData()
@@ -42,7 +47,8 @@ onMounted(() => {
 // 暴露方法
 // 改名字
 defineExpose({
-  getMore: getHomeGoodsGuessLikeData
+  getMore: getHomeGoodsGuessLikeData,
+  resetData
 })
 </script>
 

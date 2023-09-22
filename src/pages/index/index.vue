@@ -7,6 +7,7 @@ import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home';
 import type { XtxGuessInstance } from '@/types/component';
+import PageSkeleton from './componnets/PageSkeleton.vue'
 // 空数组在 ts 里面没有指定类型  以后只能是空数组 不能存放任何数据
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -31,12 +32,16 @@ const getHomeHotData = async () => {
   homeHotList.value = res.result
 
 }
-
+// 骨架屏是否显示的标记
+const isLoading = ref(false)
 // 页面加载的时候调用一次
-onLoad(() => {
-  getHomeBannerData()
-  getHomeCategoryData()
-  getHomeHotData()
+onLoad(async () => {
+  isLoading.value = true
+  await Promise.all([getHomeBannerData(),
+  getHomeCategoryData(),
+  getHomeHotData()])
+
+  isLoading.value = false
 })
 // 获取猜你喜欢组件实例
 const guessRef = ref<XtxGuessInstance>()
@@ -54,8 +59,11 @@ const onRefresherrefresh = async () => {
   // await getHomeBannerData()
   // await getHomeCategoryData()
   // await getHomeHotData()
+  // 重置猜你喜欢组件数据
+  guessRef.value?.resetData()
   // 代码调优
   await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  guessRef.value?.getMore()
   // 关闭下拉动画
   isTriggered.value = false
 }
@@ -66,14 +74,17 @@ const onRefresherrefresh = async () => {
   <CustomNavbar />
   <scroll-view refresher-enabled @refresherrefresh="onRefresherrefresh" @scrolltolower="onScrolltolower"
     :refresher-triggered="isTriggered" class="scroll-view" scroll-y>
-    <!-- 自定义轮播图 -->
-    <XtxSwiper :list="bannerList" />
-    <!-- 分类面板 -->
-    <CategoryPanel :list="categoryList" />
-    <!-- 热门推荐 -->
-    <HotPanel :list="homeHotList" />
-    <!-- 猜你喜欢 -->
-    <XtxGuess ref="guessRef" />
+    <PageSkeleton v-if="isLoading" />
+    <template v-else>
+      <!-- 自定义轮播图 -->
+      <XtxSwiper :list="bannerList" />
+      <!-- 分类面板 -->
+      <CategoryPanel :list="categoryList" />
+      <!-- 热门推荐 -->
+      <HotPanel :list="homeHotList" />
+      <!-- 猜你喜欢 -->
+      <XtxGuess ref="guessRef" />
+    </template>
   </scroll-view>
 </template>
 
