@@ -38,10 +38,7 @@ const getHomeGoodsGuessLikeData = async () => {
 onMounted(() => {
   getHomeGoodsGuessLikeData()
 })
-const sayHello = () => {
-  console.log('hello');
 
-}
 // 暴露方法
 // 改名字
 defineExpose({
