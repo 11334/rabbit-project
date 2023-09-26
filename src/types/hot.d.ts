@@ -17,7 +17,7 @@ export type SubTypeItem = {
   /** 子类id */
   id: string
   /** 子类标题 */
-  title: string
+  title: [string]
   /** 子类对应的商品集合 */
   goodsItems: PageResult<GoodsItem>
 }

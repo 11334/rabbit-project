@@ -32,7 +32,7 @@ const activeIndex = ref(0)
 // 获取热门推荐数据
 const getHotRecommendData = async () => {
   const res = await getHotRecommendAPI(currUrlMap!.url)
-  console.log(res);
+  // console.log(res);
   bannerPicture.value = res.result.bannerPicture
   subTypes.value = res.result.subTypes
 }
@@ -40,6 +40,27 @@ const getHotRecommendData = async () => {
 onLoad(() => {
   getHotRecommendData()
 })
+// 滚动触底
+const onScrolltolower = async () => {
+  // 获取当前的选项
+  const currsubTypes = subTypes.value[activeIndex.value]
+  // console.log(currsubTypes);
+  // 当前页码累加
+  currsubTypes.goodsItems.page++
+  // 调用API进行传参
+  const res = await getHotRecommendAPI(currUrlMap!.url, {
+    // 每一页都有一个id值 默认第一页
+    subType: currsubTypes.id,
+    page: currsubTypes.goodsItems.page,
+    pageSize: currsubTypes.goodsItems.pageSize
+  })
+  // console.log(res);
+  // 下拉获取更多时 新的列表选项
+  const newsubTypes = res.result.subTypes[activeIndex.value]
+  // 下拉：数组的追加-->当前选项下的商品增加
+  currsubTypes.goodsItems.items.push(...newsubTypes.goodsItems.items)
+
+}
 </script>
 
 <template>
@@ -58,7 +79,7 @@ onLoad(() => {
     </view>
     <!-- 推荐列表 -->
     <scroll-view v-for="(item, index) in subTypes" :key="item.id" v-show="activeIndex === index" scroll-y
-      class="scroll-view">
+      class="scroll-view" @scrolltolower="onScrolltolower">
       <view class="goods">
         <navigator hover-class="none" class="navigator" v-for=" goods  in  item.goodsItems.items" :key="goods.id"
           :url="`/pages/goods/goods?id=${goods.id}`">
