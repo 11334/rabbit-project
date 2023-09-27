@@ -34,7 +34,7 @@ const activeIndex = ref(0)
 const getHotRecommendData = async () => {
   const res = await getHotRecommendAPI(currUrlMap!.url, {
     // 技巧：不用因为代码的测试而反复的调整---->环境变量,开发环境，修改初始页码，方便测试分页结束------基于vite创建的vue3项目
-    page: import.meta.env.DEV ? 30 : 1,
+    page: import.meta.env ? 30 : 1,
     pageSize: 10
   })
   // console.log(res);
