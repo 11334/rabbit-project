@@ -5,6 +5,7 @@ import type { CategoryTopItem } from '@/types/category';
 import type { BannerItem } from '@/types/home';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref, computed } from 'vue';
+import PageSkeleton from '../index/componnets/PageSkeleton.vue';
 
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -28,15 +29,18 @@ const subCategoryList = computed(() => {
   return categoryList.value[activeIndex.value]?.children || []
 })
 
+// 是否数据加载完毕
+const isFinish = ref(false)
 // 页面初始化
-onLoad(() => {
-  getBannerData()
-  getCategoryTopData()
+onLoad(async () => {
+  await Promise.all([getBannerData(), getCategoryTopData()])
+  isFinish.value = true
+
 })
 </script>
 
 <template>
-  <view class="viewport">
+  <view class="viewport" v-if="isFinish">
     <!-- 搜索框 -->
     <view class="search">
       <view class="input">
@@ -64,7 +68,7 @@ onLoad(() => {
           </view>
           <view class="section">
             <navigator v-for="goods in item.goods" :key="goods.id" class="goods" hover-class="none"
-              :url="`/pages/goods/goods?id=${goods.id}}`">
+              :url="`/pages/goods/goods?id=${goods.id}`">
               <image class="image" :src="goods.picture"></image>
               <view class="name ellipsis">{{ goods.name }}</view>
               <view class="price">
@@ -77,6 +81,7 @@ onLoad(() => {
       </scroll-view>
     </view>
   </view>
+  <PageSkeleton v-else />
 </template>
 
 <style lang="scss">
