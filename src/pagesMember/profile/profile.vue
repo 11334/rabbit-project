@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getMemberProfileAPI, putMemberProfileAPI } from '@/services/profile';
+import { useMemberStore } from '@/stores';
 import type { ProfileDetail } from '@/types/member';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
@@ -19,6 +20,7 @@ onLoad(() => {
   getMemberProfileData()
 })
 
+const memberStore = useMemberStore()
 // 修改头像
 const onAvatarChange = () => {
   // 调用拍照/选择图片
@@ -41,7 +43,10 @@ const onAvatarChange = () => {
           if (res.statusCode === 200) {
             const avatar = JSON.parse(res.data).result.avatar
             // console.log(avatar);
+            // 个人信息页数据更新
             profile.value!.avatar = avatar
+            // Store头像更新
+            memberStore.profile!.avatar = avatar
             uni.showToast({ icon: 'success', title: '更新成功' })
           } else {
             uni.showToast({
@@ -62,7 +67,12 @@ const onSubmit = async () => {
     nickname: profile.value?.nickname
   })
   // console.log(res);
+  // 更新Store里的昵称
+  memberStore.profile!.nickname = res.result.nickname
   uni.showToast({ icon: 'success', title: '保存成功' })
+  setTimeout(() => {
+    uni.navigateBack()
+  }, 400)
 
 }
 </script>
