@@ -17,7 +17,9 @@ export type LoginResult = BaseProfile & {
   /** 手机号 */
   mobile: string
   /** 登录凭证 */
-  token: string
+  token: string,
+  // 用户职业  可选填
+  profession?: string
 }
 
 /** 个人信息 用户详情信息 */
