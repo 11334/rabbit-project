@@ -67,11 +67,18 @@ const onGenderChange: UniHelper.RadioGroupOnChange = (e) => {
   profile.value.gender = e.detail.value as Gender
 }
 
+// 修改生日
+const onBirthdayChange: UniHelper.DatePickerOnChange = (e) => {
+  console.log(e.detail.value);
+  profile.value.birthday = e.detail.value
+}
+
 // 点击保存提交表单
 const onSubmit = async () => {
   const res = await putMemberProfileAPI({
     nickname: profile.value?.nickname,
-    gender: profile.value.gender
+    gender: profile.value.gender,
+    birthday: profile.value.birthday
   })
   // console.log(res);
   // 更新Store里的昵称
@@ -125,7 +132,8 @@ const onSubmit = async () => {
         </view>
         <view class="form-item">
           <text class="label">生日</text>
-          <picker class="picker" mode="date" start="1900-01-01" :end="new Date()" :value="profile?.birthday">
+          <picker @change="onBirthdayChange" class="picker" mode="date" start="1900-01-01" :end="new Date()"
+            :value="profile?.birthday">
             <view v-if="profile?.birthday">{{ profile?.birthday }}</view>
             <view class="placeholder" v-else>请选择日期</view>
           </picker>
