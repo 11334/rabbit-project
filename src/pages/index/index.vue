@@ -6,8 +6,8 @@ import HotPanel from './componnets/HotPanel.vue';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home';
-import type { XtxGuessInstance } from '@/types/component';
 import PageSkeleton from './componnets/PageSkeleton.vue'
+import { useGuessList } from '@/composables';
 // 空数组在 ts 里面没有指定类型  以后只能是空数组 不能存放任何数据
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -43,13 +43,9 @@ onLoad(async () => {
 
   isLoading.value = false
 })
-// 获取猜你喜欢组件实例
-const guessRef = ref<XtxGuessInstance>()
-// 滚动触底自动触发
-const onScrolltolower = () => {
-  // console.log('滚动触底');
-  guessRef.value?.getMore()
-}
+
+const { guessRef, onScrollToLower } = useGuessList()
+
 const isTriggered = ref(false)
 // 自定义下拉刷新被触发
 const onRefresherrefresh = async () => {
@@ -72,7 +68,7 @@ const onRefresherrefresh = async () => {
 <template>
   <!-- 自定义导航栏 -->
   <CustomNavbar />
-  <scroll-view refresher-enabled @refresherrefresh="onRefresherrefresh" @scrolltolower="onScrolltolower"
+  <scroll-view refresher-enabled @refresherrefresh="onRefresherrefresh" @scrolltolower="onScrollToLower"
     :refresher-triggered="isTriggered" class="scroll-view" scroll-y>
     <PageSkeleton v-if="isLoading" />
     <template v-else>
