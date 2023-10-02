@@ -1,3 +1,4 @@
+// 添加收获地址：请求参数
 export type AddressParams = {
   // 收货人姓名
   receiver: string,
@@ -13,5 +14,13 @@ export type AddressParams = {
   address: string,
   // 默认地址  1 为 是 0 为 否
   isDefault: integer,
+}
+
+/** 收货地址项   交叉类型合并*/
+export type AddressItem = AddressParams & {
+  /** 收货地址 id */
+  id: string
+  /** 省市区 */
+  fullLocation: string
 }
 
