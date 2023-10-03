@@ -46,7 +46,7 @@ const loginSuccess = (profile: LoginResult) => {
     // 页面跳转(跳转普通页面可以用 uni.navigateTo())
     // uni.navigateTo()
     // 但是跳转到tabBar页面只能用 switchTab
-    uni.switchTab({ url: "/pages/my/my" })
+    uni.navigateBack()
   }, 500)
 
 }
