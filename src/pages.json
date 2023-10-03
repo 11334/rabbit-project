@@ -34,6 +34,12 @@
       }
     },
     {
+      "path": "pages/cart/cart2",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
+    },
+    {
       "path": "pages/category/category",
       "style": {
         "navigationBarTitleText": "分类"
@@ -64,7 +70,7 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  // 设置 TabBar
+  // 设置 TabBar  没有在list里配置的都是普通页否则都是tabBar页
   "tabBar": {
     "color": "#333",
     "selectedColor": "#27ba9b",
